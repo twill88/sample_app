@@ -12,7 +12,7 @@
 require 'spec_helper'
 
 describe User do
-  before { @user = User.new(name: "Example User", email: "user@example.com") }
+  before { @user = User.new(name: "Example User", email: "User@Example.com") }
 
   subject { @user }
 
@@ -53,6 +53,25 @@ describe User do
         @user.email = valid_address
         @user.should be_valid
       end
+    end
+  end
+
+  describe "when email address is already taken" do
+    before do
+      user_with_same_email = @user.dup
+      user_with_same_email.email = @user.email.upcase
+      user_with_same_email.save
+    end
+
+    it { should_not be_valid }
+  end
+
+  describe "when email is saved to db" do
+    it "should be all lowercase" do
+      @user.save
+      userEmail = @user.email
+      @user.reload
+      userEmail.should include(@user.email.downcase)
     end
   end
 end
