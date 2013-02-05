@@ -21,5 +21,9 @@ describe UsersHelper do
 		it "should have gravatar url for source" do
 			gravatar_for(@user).should =~ /src="https:\/\/secure.gravatar.com\/avatar\//
 		end
+
+		it "should accept a size option and append size to src" do
+			gravatar_for(@user, size: 40).should =~ /src=".*?s=40/
+		end
 	end
 end
